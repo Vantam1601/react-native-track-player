@@ -386,10 +386,25 @@ public class ForwardingPlayer implements Player {
         player.seekForward();
     }
 
+    @Override
+    public boolean hasPrevious() {
+        return false;
+    }
+
+    @Override
+    public boolean hasPreviousWindow() {
+        return false;
+    }
+
     /** Calls {@link Player#hasPreviousMediaItem()} on the delegate and returns the result. */
     @Override
     public boolean hasPreviousMediaItem() {
         return player.hasPreviousMediaItem();
+    }
+
+    @Override
+    public void previous() {
+
     }
 
     /**

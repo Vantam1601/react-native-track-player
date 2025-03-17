@@ -219,7 +219,7 @@ abstract class AudioPlayer internal constructor(
         exoPlayer1 = initExoPlayer("APM-Player1")
         if (options.crossfade) { exoPlayer2 = initExoPlayer("APM-Player2") }
         exoPlayer = exoPlayer1
-        player = if (options.nativeExample) ExampleForwardingPlayer(exoPlayer1, exoPlayer2) else APMForwardingPlayer(exoPlayer1, exoPlayer2)
+        player =  APMForwardingPlayer(exoPlayer1, exoPlayer2)
         player.addListener(playerListener)
 
     }
@@ -362,6 +362,7 @@ abstract class AudioPlayer internal constructor(
             val fadeFromVolume = prevPlayer.volume
             while (fadeOutDuration > 0) {
                 fadeOutDuration -= fadeInterval
+                val startTime = System.currentTimeMillis()
                 prevPlayer.volume = fadeFromVolume * (1 - min((System.currentTimeMillis() - startTime), fadeDuration) / fadeDuration)
                 delay(fadeInterval)
             }
@@ -572,8 +573,19 @@ abstract class AudioPlayer internal constructor(
             }
             return super.getAvailableCommands()
         }
+
+        override fun hasPrevious(): Boolean {
+            return mPlayer1.hasPrevious() || (mPlayer2?.hasPrevious() ?: false)
     }
 
+        override fun hasPreviousWindow(): Boolean {
+            TODO("Not yet implemented")
+        }
+
+        override fun previous() {
+            TODO("Not yet implemented")
+        }
+    }
     private inner class APMForwardingPlayer
         (mPlayer1: ExoPlayer, mPlayer2: ExoPlayer?): ExampleForwardingPlayer(mPlayer1, mPlayer2) {
         override fun setMediaItems(mediaItems: MutableList<MediaItem>, resetPosition: Boolean) {
@@ -656,6 +668,10 @@ abstract class AudioPlayer internal constructor(
                 )
             )
         }
+
+    override fun hasPrevious(): Boolean {
+        return mPlayer1.hasPrevious() || (mPlayer2?.hasPrevious() ?: false)
+    }
     }
 
     private inner class APMFocusListener: AudioManager.OnAudioFocusChangeListener {

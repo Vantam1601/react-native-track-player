@@ -195,19 +195,19 @@
 
     private void createReactContextAndScheduleTask(final HeadlessJsTaskConfig taskConfig) {
 
-        if (DefaultNewArchitectureEntryPoint.getBridgelessEnabled()) { // new arch
-            final ReactHost reactHost = getReactHost();
-            reactHost.addReactInstanceEventListener(
-                    new ReactInstanceEventListener() {
-                        @Override
-                        public void onReactContextInitialized(@NonNull ReactContext reactContext) {
-                            invokeStartTask(reactContext, taskConfig);
-                            reactHost.removeReactInstanceEventListener(this);
-                        }
-                    }
-            );
-            reactHost.start();
-        } else { // old arch
+//        if (DefaultNewArchitectureEntryPoint.getBridgelessEnabled()) { // new arch
+//            final ReactHost reactHost = getReactHost();
+//            reactHost.addReactInstanceEventListener(
+//                    new ReactInstanceEventListener() {
+//                        @Override
+//                        public void onReactContextInitialized(@NonNull ReactContext reactContext) {
+//                            invokeStartTask(reactContext, taskConfig);
+//                            reactHost.removeReactInstanceEventListener(this);
+//                        }
+//                    }
+//            );
+//            reactHost.start();
+//        } else { // old arch
             final ReactInstanceManager reactInstanceManager =
                     getReactNativeHost().getReactInstanceManager();
 
@@ -220,7 +220,7 @@
                         }
                     });
             reactInstanceManager.createReactContextInBackground();
-        }
+//        }
     }
  }
  
